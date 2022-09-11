@@ -79,7 +79,7 @@ if (isset($app_response) && count($app_response["feeds"]) > 0)
     echo("</table>");
 }
 ?>
-    <p align='middle' style="margin-top: 28px"><small>Search Provided by <a href='https://podcastindex.org/'>Podcast Index.org</a> | <a href="https://github.com/codepoet80/retro-podcasts">Host this yourself</a> | <a href='<?php echo $REQUEST_PROTOCOL; ?>://appcatalog.webosarchive.org/app/podcastdirectory'>Download the webOS App</a></small></p>
+    <p align='middle' style="margin-top: 28px"><small>Search Provided by <a href='https://podcastindex.org/'>Podcast Index.org</a> | <a href="https://github.com/webosarchive/podcast-service">Host this yourself</a> | <a href='<?php echo $REQUEST_PROTOCOL; ?>://appcatalog.webosarchive.org/app/podcastdirectory'>Download the webOS App</a></small></p>
 </div>
 </body>
 </html>
