@@ -107,6 +107,16 @@ else {  //XML RESPONSE
     $doc->loadXML($rss->asXML());
     $thedocument = $doc->documentElement;
 
+    //Redirect old domain to moved feed
+    if ($_SERVER["HTTP_HOST"] == "podcasts.webosarchive.com") {
+        $useTitle = $thedocument->getElementsByTagName('title')->item(0)->nodeValue;
+        $rss = simplexml_load_file("moved.xml");
+        $doc->loadXML($rss->asXML());
+
+        $thedocument = $doc->documentElement;
+        $thedocument->getElementsByTagName('title')->item(0)->nodeValue = str_replace("[*TITLE*]", $useTitle, $thedocument->getElementsByTagName('title')->item(0)->nodeValue);
+    }
+
     //determine if the tiny client will need help with the images
     $list = $thedocument->getElementsByTagNameNS('http://www.itunes.com/dtds/podcast-1.0.dtd', 'image');
     for ($i = $list->length; --$i >= 0; ) {
