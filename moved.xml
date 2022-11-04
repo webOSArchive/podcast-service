@@ -14,9 +14,9 @@
     <itunes:explicit>no</itunes:explicit>
     <itunes:type>serial</itunes:type>
     <itunes:subtitle/>
-    <itunes:author>Stuff</itunes:author>    
+    <itunes:author>webOS Archive</itunes:author>    
     <itunes:image href="http://podcasts.webosarchive.org/assets/moved.png"/>
-    <itunes:category text="webOS Archive">
+    <itunes:category text="News">
     </itunes:category>
     <item>
       <title>[*TITLE*] Feed Moved</title>
