@@ -38,6 +38,7 @@ if (!file_exists($path)) {
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_FILE, $fh);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 720);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_exec($ch);
