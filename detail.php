@@ -10,13 +10,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="white" />
 
-<link rel="stylesheet" href="style.css">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
-<title>webOS Podcast Directory - Podcast Detail</title>
-</head>
-<body onload="document.getElementById('txtSearch').focus()">
-<?php include ("menu.php"); ?>
-<div class="content">
 <?php
 include ("common.php");
 
@@ -38,7 +31,48 @@ $back_path = $_SERVER['HTTP_REFERER'];
 if (strpos($back_path, "?search=") === false) {
     $back_path = "index.php";
 }
+
+// Prepare Social media meta data
+$ogTitle = "Podcast Directory from webOS Archive";
+$ogImage = "http://podcasts.webosarchive.org/assets/icon-256.png";
+$ogDesc = "webOS Archive's Podcast Directory let's you listen to today's podcasts on your retro devices!";
+if (isset($app_response["feed"])) {
+    $feed = $app_response["feed"];
+    $ogImage = $feed['image'];
+    $ogTitle = $feed['title'] . " on " . $ogTitle;
+    $ogDesc = $feed['description'];
+}
 ?>
+
+<!-- Social media -->
+<meta name="description" content="<?php echo $ogDesc; ?>" />
+<link rel="canonical" href="http://podcasts.webosarchive.org" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="<?php echo $ogTitle; ?>" />
+<meta property="og:description" content="<?php echo $ogDesc; ?>" />
+<meta property="og:url" content="https://www.webosarchive.org" />
+<meta property="og:site_name" content="webOS Archive" />
+<meta property="article:published_time" content="<?php echo date('m/d/Y H:i:s', time()); ?>" />
+<meta property="article:modified_time" content="<?php echo date('m/d/Y H:i:s', time()); ?>" />
+<meta property="og:image" content="<?php echo $ogImage; ?>" />
+<meta property="og:image:width" content="256" />
+<meta property="og:image:height" content="256" />
+<meta property="og:image:type" content="image/png" />
+<meta name="author" content="webOS Archive" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="<?php echo $ogTitle; ?>" />
+<meta name="twitter:description" content="<?php echo $ogDesc; ?>" />
+<meta name="twitter:image" content="<?php echo $ogImage; ?>" />
+<!-- /Social media -->
+
+<link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
+<title>webOS Podcast Directory - Podcast Detail</title>
+</head>
+<body onload="document.getElementById('txtSearch').focus()">
+<?php include ("menu.php"); ?>
+<div class="content">
 <small>&lt; <a href="<?php echo $back_path ?>">Back to Search</a></small>
 <?php
 if (isset($app_response["feed"]))

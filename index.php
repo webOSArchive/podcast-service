@@ -10,6 +10,28 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="white" />
 
+<!-- Social media -->
+<meta name="description" content="webOS Archive's Podcast Directory let's you listen to today's podcasts on your retro devices!" />
+<link rel="canonical" href="http://podcasts.webosarchive.org" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Podcast Directory from webOS Archive" />
+<meta property="og:description" content="webOS Archive's Podcast Directory let's you listen to today's podcasts on your retro devices!" />
+<meta property="og:url" content="https://www.webosarchive.org" />
+<meta property="og:site_name" content="webOS Archive" />
+<meta property="article:published_time" content="<?php echo date('m/d/Y H:i:s', time()); ?>" />
+<meta property="article:modified_time" content="<?php echo date('m/d/Y H:i:s', time()); ?>" />
+<meta property="og:image" content="http://podcasts.webosarchive.org/assets/icon-256.png" />
+<meta property="og:image:width" content="256" />
+<meta property="og:image:height" content="256" />
+<meta property="og:image:type" content="image/png" />
+<meta name="author" content="webOS Archive" />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Podcast Directory from webOS Archive" />
+<meta name="twitter:description" content="webOS Archive's Podcast Directory let's you listen to today's podcasts on your retro devices!" />
+<meta name="twitter:image" content="http://podcasts.webosarchive.org/assets/icon-256.png" />
+<!-- /Social media -->
+
 <link rel="stylesheet" href="style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
 <title>webOS Podcast Directory</title>
