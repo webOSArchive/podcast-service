@@ -12,6 +12,7 @@ if (isset($_GET['q'])) {
 } else {
 	$the_query = $_SERVER['QUERY_STRING'];
 }
+$the_query = str_replace(" ", "+", $the_query);
 $the_query = "https://api.podcastindex.org/api/1.0/search/byterm?q=" . $the_query;
 
 //API Credentials
