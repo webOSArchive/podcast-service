@@ -40,6 +40,7 @@ if (!file_exists($path)) {
 	curl_setopt($ch, CURLOPT_FILE, $fh);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 720);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_exec($ch);
 	if (curl_errno($ch)) {
 		echo "Fetch error: " . curl_error($ch);
