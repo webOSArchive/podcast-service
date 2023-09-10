@@ -1,3 +1,8 @@
+<?php
+if (isset($app_response["feed"])){
+    $feed = $app_response["feed"];
+}
+?>
 <html>
 <head>
 <link rel="shortcut icon" sizes="256x256" href="assets/icon-256.png">
@@ -36,7 +41,7 @@ if (strpos($back_path, "?search=") === false) {
 $ogTitle = "Podcast Directory from webOS Archive";
 $ogImage = "http://podcasts.webosarchive.org/assets/icon-256.png";
 $ogDesc = "webOS Archive's Podcast Directory let's you listen to today's podcasts on your retro devices!";
-if (isset($app_response["feed"])) {
+if (isset($feed)) {
     $feed = $app_response["feed"];
     $ogImage = $feed['image'];
     $ogTitle = $feed['title'] . " on " . $ogTitle;
@@ -68,16 +73,14 @@ if (isset($app_response["feed"])) {
 
 <link rel="stylesheet" href="style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
-<title>webOS Podcast Directory - Podcast Detail</title>
+<title><?php echo $feed['title'] . " - " . $ogTitle?></title>
 </head>
 <body onload="document.getElementById('txtSearch').focus()">
 <?php include ("menu.php"); ?>
 <div class="content">
 <small>&lt; <a href="<?php echo $back_path ?>">Back to Search</a></small>
 <?php
-if (isset($app_response["feed"]))
-{
-    $feed = $app_response["feed"];
+if (isset($feed)) {
     //echo $feedimage;
     echo "<p align='middle' style='margin-top:30px;'><img src='" . $feed['image'] . "' style='width:128px; height: 128px;border-radius: 3%; -webkit-border-radius:6px;' border='0' onerror='this.onerror=null; this.src=\"assets/icon-minimal.png\"' ></p>";
     echo "<p align='middle' style='margin-top:12px;margin-bottom:32px;'><b>" . $feed['title'] . "</b></p>";
