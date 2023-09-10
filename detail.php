@@ -32,9 +32,10 @@ if (isset($_SERVER['QUERY_STRING']))
 	$app_response = json_decode($app_content, true);
 }
 
-$back_path = $_SERVER['HTTP_REFERER'];
-if (strpos($back_path, "?search=") === false) {
-    $back_path = "index.php";
+$back_path = "index.php";
+if (isset($_SERVER['HTTP_REFERER'])) {
+    if (strpos($_SERVER['HTTP_REFERER'], "?search") !== false)
+        $back_path = $_SERVER['HTTP_REFERER'];
 }
 
 // Prepare Social media meta data
@@ -73,7 +74,7 @@ if (isset($feed)) {
 
 <link rel="stylesheet" href="style.css">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
-<title><?php echo $feed['title'] . " - " . $ogTitle?></title>
+<title><?php echo $ogTitle?></title>
 </head>
 <body onload="document.getElementById('txtSearch').focus()">
 <?php include ("menu.php"); ?>
