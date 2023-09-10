@@ -69,6 +69,7 @@ if (isset($feed)) {
 <meta name="twitter:title" content="<?php echo $ogTitle; ?>" />
 <meta name="twitter:description" content="<?php echo $ogDesc; ?>" />
 <meta name="twitter:image" content="<?php echo $ogImage; ?>" />
+<meta name="description" content="<?php echo $ogDesc; ?>">
 <!-- /Social media -->
 
 <link rel="stylesheet" href="style.css">
