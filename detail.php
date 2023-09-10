@@ -9,7 +9,6 @@ $image_path = str_replace("detail.php", "image.php", $action_path);
 if (isset($_SERVER['QUERY_STRING']))
 {
     $app_path = $search_path . "?" . $_SERVER['QUERY_STRING'];
-    die ("appfile: " . $app_path);
 	$app_file = fopen($app_path, "rb");
 	$app_content = stream_get_contents($app_file);
 	fclose($app_file);
