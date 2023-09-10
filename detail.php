@@ -1,6 +1,15 @@
 <?php
-if (isset($app_response["feed"])){
-    $feed = $app_response["feed"];
+
+if (isset($_SERVER['QUERY_STRING']))
+{
+    $app_path = $search_path . "?" . $_SERVER['QUERY_STRING'];
+	$app_file = fopen($app_path, "rb");
+	$app_content = stream_get_contents($app_file);
+	fclose($app_file);
+	$app_response = json_decode($app_content, true);
+    if (isset($app_response["feed"])){
+        $feed = $app_response["feed"];
+    }    
 }
 ?>
 <html>
@@ -22,15 +31,6 @@ $action_path = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 $search_path = str_replace("detail.php", "getdetailby.php", $action_path);
 $feed_path = str_replace("detail.php", "tiny.php", $action_path);
 $image_path = str_replace("detail.php", "image.php", $action_path);
-
-if (isset($_SERVER['QUERY_STRING']))
-{
-    $app_path = $search_path . "?" . $_SERVER['QUERY_STRING'];
-	$app_file = fopen($app_path, "rb");
-	$app_content = stream_get_contents($app_file);
-	fclose($app_file);
-	$app_response = json_decode($app_content, true);
-}
 
 $back_path = "index.php";
 if (isset($_SERVER['HTTP_REFERER'])) {
