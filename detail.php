@@ -4,6 +4,7 @@ if (isset($_SERVER['QUERY_STRING']))
 {
     $app_path = $search_path . "?" . $_SERVER['QUERY_STRING'];
 	$app_file = fopen($app_path, "rb");
+    die ("appfile: " . $app_file);
 	$app_content = stream_get_contents($app_file);
 	fclose($app_file);
 	$app_response = json_decode($app_content, true);
