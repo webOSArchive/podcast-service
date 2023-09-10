@@ -1,4 +1,10 @@
 <?php
+include ("common.php");
+
+$action_path = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+$search_path = str_replace("detail.php", "getdetailby.php", $action_path);
+$feed_path = str_replace("detail.php", "tiny.php", $action_path);
+$image_path = str_replace("detail.php", "image.php", $action_path);
 
 if (isset($_SERVER['QUERY_STRING']))
 {
@@ -26,13 +32,6 @@ if (isset($_SERVER['QUERY_STRING']))
 <meta name="apple-mobile-web-app-status-bar-style" content="white" />
 
 <?php
-include ("common.php");
-
-$action_path = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
-$search_path = str_replace("detail.php", "getdetailby.php", $action_path);
-$feed_path = str_replace("detail.php", "tiny.php", $action_path);
-$image_path = str_replace("detail.php", "image.php", $action_path);
-
 $back_path = "index.php";
 if (isset($_SERVER['HTTP_REFERER'])) {
     if (strpos($_SERVER['HTTP_REFERER'], "?search") !== false)
