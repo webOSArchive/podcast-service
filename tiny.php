@@ -21,7 +21,18 @@ if (isset($_GET["type"]))
 $maxItems = 10;
 if (isset($_GET["max"]))
     $maxItems = $_GET["max"];
-
+$cache = true;
+if (isset($_GET["cache"]) && $_GET["cache"]=="no") {
+    $cache = false;
+    $buster = uniqid();
+    if (strpos($url, "?") === false) {
+        $url = $url . "?cacheBust=" . $buster; 
+    } else {
+        $url = $url . "&cacheBust=" . $buster; 
+    }
+    error_log("Podcast service bypassing cache using URL: " . $url);
+}
+    
 //Prepare the cache
 $path = "cache";
 if (!file_exists($path)) {
@@ -29,8 +40,8 @@ if (!file_exists($path)) {
 }
 $path = $path . "/" . $cacheID . ".xml";
 
-//Fetch and cache the file if its not already cached (and the cache is not too old)
-if (file_exists($path) && time()-filemtime($path) > 24 * 3600) {
+//Fetch the file or use cache -- but dump cache if too old or cache is disabled
+if (file_exists($path) && (time()-filemtime($path) > 24 * 3600 || !$cache)) {
     // file older than 24 hours
     unlink($path);
 }
@@ -73,7 +84,6 @@ if ($as == "json") {    //JSON RESPONSE
         if (++$i == $maxItems) break;
     }
     //determine if the tiny client will need help with the images
-    //TODO: Do we need the second (itunes) image?
     $image_url = (string)$channel->image->url;
     if (strpos($image_url, "https:") !== false) {
         $image_url = $image_helper_path . "?img=" . base64url_encode($image_url);

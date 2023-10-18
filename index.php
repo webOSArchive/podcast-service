@@ -68,7 +68,19 @@ if (isset($_GET['search']) && $_GET['search'] != null)
 	fclose($app_file);
 	$app_response = json_decode($app_content, true);
 }
-
+//Check pre-requisites exists
+if (!file_exists("secrets.php")) {
+	die ("Podcast Service installation error: secrets file not found. Review the readme file.");
+}
+if (!function_exists('curl_version')) {
+    die ("Podcast Service installation error: php-curl not installed on server. Review the readme file.");
+}
+if (!function_exists('simplexml_load_file')) {
+    die ("Podcast Service installation error: php-xml not installed on server. Review the readme file.");
+}
+if (!extension_loaded('gd')) {
+    die ("Podcast Service installation error: php-gd not installed on server. Review the readme file.");
+}
 ?>
     <p align='middle' style='margin-top:50px;'><a href="./"><img src='assets/icon-128.png' style="width:128px; height: 128px;" border="0"></a><br>
     <strong>Retro Podcast Directory</strong><br/>
