@@ -33,7 +33,7 @@ $cacheID = substr($cacheID, $startPos);
 
 //Fetch and cache the file if its not already cached
 $path = $path . "/" . $cacheID . ".mp3";
-if (!file_exists($path)) {
+if (!file_exists($path) || filesize($path) < 1) {
 	$fh = fopen($path, "w") or die("ERROR openining " . $url);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
