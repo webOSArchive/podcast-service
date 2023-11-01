@@ -35,7 +35,7 @@ $cacheID = substr($cacheID, $startPos);
 
 //Fetch and cache the file if its not already cached
 $path = $path . "/" . $cacheID . ".png";
-if (!file_exists($path)) {
+if (!file_exists($path) || filesize($path) < 1) {
     file_put_contents($path, fopen($url, 'r'));
 }
 

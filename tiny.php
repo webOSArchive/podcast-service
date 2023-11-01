@@ -41,7 +41,7 @@ if (!file_exists($path)) {
 $path = $path . "/" . $cacheID . ".xml";
 
 //Fetch the file or use cache -- but dump cache if too old or cache is disabled
-if (file_exists($path) && (time()-filemtime($path) > 24 * 3600 || !$cache)) {
+if (file_exists($path) && ((time()-filemtime($path) > 24 * 3600 || !$cache)) || filesize($path) < 1) {
     // file older than 24 hours
     unlink($path);
 }
