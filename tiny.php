@@ -160,7 +160,7 @@ else {  //XML RESPONSE
     $list = $thedocument->getElementsByTagName('item');
     for ($i = $list->length; --$i >= 0; ) {
         $el = $list->item($i);
-        if ($i > $maxItems) {
+        if ($i >= $maxItems) {
             $el->parentNode->removeChild($el);
         }
     }
