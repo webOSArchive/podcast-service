@@ -181,7 +181,7 @@ else {  //XML RESPONSE
     header('Content-Type: text/xml');
     //Skip any non-document nodes (eg: stylesheets cause problems for webOS)
     $xml_out = $doc->saveXML($doc->documentElement);
-    echo $xml_out;
+    echo trim($xml_out);
 }
 
 function removeXMLNodes(&$list)
