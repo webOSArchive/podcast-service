@@ -8,13 +8,13 @@ $image_path = str_replace("detail.php", "image.php", $action_path);
 
 if (isset($_SERVER['QUERY_STRING']))
 {
-    $app_path = $search_path . "?" . $_SERVER['QUERY_STRING'];
-	$app_file = fopen($app_path, "rb");
-	$app_content = stream_get_contents($app_file);
-	fclose($app_file);
-	$app_response = json_decode($app_content, true);
-    if (isset($app_response["feed"])){
-        $feed = $app_response["feed"];
+    $feed_path = $search_path . "?" . $_SERVER['QUERY_STRING'];
+	$feed_file = fopen($feed_path, "rb");
+	$feed_content = stream_get_contents($feed_file);
+	fclose($feed_file);
+	$feed_response = json_decode($feed_content, true);
+    if (isset($feed_response["feed"])){
+        $feed = $feed_response["feed"];
     }    
 }
 ?>
@@ -42,7 +42,7 @@ $ogTitle = "Podcast Directory from webOS Archive";
 $ogImage = "http://podcasts.webosarchive.org/assets/icon-256.png";
 $ogDesc = "webOS Archive's Podcast Directory let's you listen to today's podcasts on your retro devices!";
 if (isset($feed)) {
-    $feed = $app_response["feed"];
+    $feed = $feed_response["feed"];
     $ogImage = $feed['image'];
     $ogTitle = $feed['title'] . " on " . $ogTitle;
     $ogDesc = $feed['description'];

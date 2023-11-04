@@ -98,16 +98,19 @@ if (!extension_loaded('gd')) {
 if (isset($app_response) && count($app_response["feeds"]) > 0)
 {
     echo("<table cellpadding='5'>");
-    foreach($app_response["feeds"] as $app) {
-        echo("<tr><td align='center' valign='top'><img style='width:64px; height:64px; border-radius: 2%; -webkit-border-radius:5px;' src='". $image_path . "?img=" . base64url_encode($app["image"]) . "' border='0' onerror='this.onerror=null; this.src=\"assets/icon-minimal.png\"' >");
-        echo("<td width='100%' style='padding-left: 14px'><b>{$app["title"]}</b><br/>");
-        echo("<i>" . $app["description"] . "...</i><br/>");
-        if (isset($app["substitution_reason"])) {
-            echo "<small>Note: " . $app["substitution_reason"] . "</small><br>";
+    foreach($app_response["feeds"] as $feed) {
+        echo("<tr><td align='center' valign='top'><img style='width:64px; height:64px; border-radius: 2%; -webkit-border-radius:5px;' src='". $image_path . "?img=" . base64url_encode($feed["image"]) . "' border='0' onerror='this.onerror=null; this.src=\"assets/icon-minimal.png\"' >");
+        echo("<td width='100%' style='padding-left: 14px'><b>{$feed["title"]}</b><br/>");
+        echo("<i>" . $feed["description"] . "...</i><br/>");
+        if (isset($feed["substitution_reason"])) {
+            echo "<small>Note: " . $feed["substitution_reason"] . "</small><br>";
         }
-        echo("<a href='{$app["url"]}' target='_blank'><img src='assets/rss-16.png'> Full Feed</a> | ");
-        echo("<a href='" . $feed_path . "?url=" . base64url_encode($app["url"]) . "' target='_blank'><img src='assets/rss-16.png'> Tiny Feed</a> | ");
-        echo("<a href='" . $detail_path . "?id=" . $app["id"] . "'>More Details</a>");
+        echo("<a href='{$feed["url"]}' target='_blank'><img src='assets/rss-16.png'> Full Feed</a> | ");
+        echo("<a href='" . $feed_path . "?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png'> Tiny Feed</a> | ");
+        if (isset($feed['id']))
+            echo("<a href='" . $detail_path . "?id=" . $feed["id"] . "'>More Details</a>");
+        else
+            echo("<a href='" . $detail_path . "?url=" . $feed["url"] . "'>More Details</a>");
         echo("</td></tr>");
     }
     echo("</table>");

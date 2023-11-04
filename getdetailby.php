@@ -3,7 +3,7 @@
 
 include ("common.php");
 
-//Figure the query
+//Figure out the query
 if (isset($_GET['url'])) {
 	$url = urldecode($_GET['url']);
 	if (strpos($url, "tiny.php?url=") !== false) {
@@ -52,9 +52,26 @@ header('Content-Type: application/json');
 $response = curl_exec ($ch);
 curl_close ($ch);
 
+$response_obj = json_decode($response);
+
+//Inject any restored feeds
+if (isset($_GET['url'])) {
+	$url = urldecode($_GET['url']);
+	include ("restorations.php");
+	if (isset($restorations)) {
+		foreach ($restorations as $restoration) {
+			error_log(json_encode($restoration));
+			if ($restoration['url'] == $url) {
+				$response_obj->status = true;
+				$response_obj->description = "Feed found using a restoration";
+				$response_obj->feed = $restoration;
+			}
+		}
+	}
+}
+//Inject any modified feeds
 include ("substitutions.php");
 if (isset($substitutions)) {
-	$response_obj = json_decode($response);
 	if (isset($response_obj->feed)) {
 		if (isset($substitutions[$response_obj->feed->url])) {
 			$new_feed = $substitutions[$response_obj->feed->url];
@@ -62,9 +79,9 @@ if (isset($substitutions)) {
 				$response_obj->feed->$key = $value;
 			}
 		}
-	}	
-	$response = json_encode($response_obj);
-} 	
+	}
+}
+$response = json_encode($response_obj);
 print_r($response);
 
 ?>

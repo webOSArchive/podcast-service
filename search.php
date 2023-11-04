@@ -12,8 +12,10 @@ if (isset($_GET['q'])) {
 } else {
 	$the_query = $_SERVER['QUERY_STRING'];
 }
+$queryParts = explode("&", $the_query);
+$original_query = $queryParts[0];
 
-$original_query = str_replace("+", " ", strtolower($the_query));
+$original_query = str_replace("+", " ", strtolower($original_query));
 $the_query = str_replace(" ", "+", $the_query);
 $the_query = "https://api.podcastindex.org/api/1.0/search/byterm?q=" . $the_query;
 
@@ -54,7 +56,7 @@ if (isset($restorations)) {
 			array_push($response_obj->feeds, $restorations[$restoration]);
 		}
 	}
-} 	
+}
 
 //Inject any modified feeds
 include ("substitutions.php");
