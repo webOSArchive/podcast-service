@@ -30,7 +30,7 @@ if (isset($_GET["cache"]) && $_GET["cache"]=="no") {
     } else {
         $url = $url . "&cacheBust=" . $buster; 
     }
-    error_log("Podcast service bypassing cache using URL: " . $url);
+    //error_log("Podcast service bypassing cache using URL: " . $url);
 }
     
 //Prepare the cache

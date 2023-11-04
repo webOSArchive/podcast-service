@@ -60,7 +60,6 @@ if (isset($_GET['url'])) {
 	include ("restorations.php");
 	if (isset($restorations)) {
 		foreach ($restorations as $restoration) {
-			error_log(json_encode($restoration));
 			if ($restoration['url'] == $url) {
 				$response_obj->status = true;
 				$response_obj->description = "Feed found using a restoration";

@@ -51,7 +51,6 @@ include ("restorations.php");
 if (isset($restorations)) {
 	foreach (array_keys($restorations) as $restoration) {
 		$thisTitle = strtolower($restoration);
-		error_log ("searching for " . $original_query . " in " . $thisTitle);
 		if (strpos($thisTitle, $original_query) || strpos($original_query, $thisTitle)) {
 			array_push($response_obj->feeds, $restorations[$restoration]);
 		}
