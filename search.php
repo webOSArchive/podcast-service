@@ -13,6 +13,7 @@ if (isset($_GET['q'])) {
 	$the_query = $_SERVER['QUERY_STRING'];
 }
 $the_query = str_replace(" ", "+", $the_query);
+$original_query = strtolower($the_query);
 $the_query = "https://api.podcastindex.org/api/1.0/search/byterm?q=" . $the_query;
 
 //API Credentials
@@ -40,9 +41,22 @@ header('Content-Type: application/json');
 $response = curl_exec ($ch);
 curl_close ($ch);
 
+$response_obj = json_decode($response);
+
+//Inject any restored feeds
+include ("restorations.php");
+if (isset($restorations)) {
+	foreach (array_keys($restorations) as $restoration) {
+		$thisTitle = strtolower($restoration);
+		if (strpos($thisTitle, $original_query) || strpos($original_query, $thisTitle)) {
+			array_push($response_obj->feeds, $restorations[$restoration]);
+		}
+	}
+} 	
+
+//Inject any modified feeds
 include ("substitutions.php");
 if (isset($substitutions)) {
-	$response_obj = json_decode($response);
 	foreach ($response_obj->feeds AS $feed){
 		if (isset($substitutions[$feed->url])) {
 			$new_feed = $substitutions[$feed->url];
