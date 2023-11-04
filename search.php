@@ -12,7 +12,8 @@ if (isset($_GET['q'])) {
 } else {
 	$the_query = $_SERVER['QUERY_STRING'];
 }
-$original_query = strtolower($the_query);
+
+$original_query = str_replace("+", " ", strtolower($the_query));
 $the_query = str_replace(" ", "+", $the_query);
 $the_query = "https://api.podcastindex.org/api/1.0/search/byterm?q=" . $the_query;
 
@@ -48,6 +49,7 @@ include ("restorations.php");
 if (isset($restorations)) {
 	foreach (array_keys($restorations) as $restoration) {
 		$thisTitle = strtolower($restoration);
+		error_log ("searching for " . $original_query . " in " . $thisTitle);
 		if (strpos($thisTitle, $original_query) || strpos($original_query, $thisTitle)) {
 			array_push($response_obj->feeds, $restorations[$restoration]);
 		}
