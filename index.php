@@ -53,7 +53,7 @@ $REQUEST_PROTOCOL = $isSecure ? 'https' : 'http';
 
 $action_path = $REQUEST_PROTOCOL . '://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 $search_path = str_replace("index.php", "search.php", $action_path);
-$feed_path = str_replace("index.php", "tiny.php", $action_path);
+$tiny_feed_path = str_replace("index.php", "tiny.php", $action_path);
 $image_path = str_replace("index.php", "image.php", $action_path);
 $detail_path = str_replace("index.php", "detail.php", $action_path);
 
@@ -62,11 +62,11 @@ if (isset($_GET['max']))
 	$max=$_GET['max'];
 if (isset($_GET['search']) && $_GET['search'] != null)
 {
-    $app_path = $search_path . "?max=" . $max ."&q=" . urlencode($_GET['search']);
-	$app_file = fopen($app_path, "rb");
-	$app_content = stream_get_contents($app_file);
-	fclose($app_file);
-	$app_response = json_decode($app_content, true);
+    $feed_path = $search_path . "?max=" . $max ."&q=" . urlencode($_GET['search']);
+	$feed_file = fopen($feed_path, "rb");
+	$feed_content = stream_get_contents($feed_file);
+	fclose($feed_file);
+	$feed_response = json_decode($feed_content, true);
 }
 //Check pre-requisites exists
 if (!file_exists("secrets.php")) {
@@ -95,10 +95,10 @@ if (!extension_loaded('gd')) {
         </div>
     </form>
 <?php
-if (isset($app_response) && count($app_response["feeds"]) > 0)
+if (isset($feed_response) && count($feed_response["feeds"]) > 0)
 {
     echo("<table cellpadding='5'>");
-    foreach($app_response["feeds"] as $feed) {
+    foreach($feed_response["feeds"] as $feed) {
         echo("<tr><td align='center' valign='top'><img style='width:64px; height:64px; border-radius: 2%; -webkit-border-radius:5px;' src='". $image_path . "?img=" . base64url_encode($feed["image"]) . "' border='0' onerror='this.onerror=null; this.src=\"assets/icon-minimal.png\"' >");
         echo("<td width='100%' style='padding-left: 14px'><b>{$feed["title"]}</b><br/>");
         echo("<i>" . $feed["description"] . "...</i><br/>");
@@ -106,7 +106,7 @@ if (isset($app_response) && count($app_response["feeds"]) > 0)
             echo "<small>Note: " . $feed["substitution_reason"] . "</small><br>";
         }
         echo("<a href='{$feed["url"]}' target='_blank'><img src='assets/rss-16.png'> Full Feed</a> | ");
-        echo("<a href='" . $feed_path . "?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png'> Tiny Feed</a> | ");
+        echo("<a href='" . $tiny_feed_path . "?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png'> Tiny Feed</a> | ");
         if (isset($feed['id']))
             echo("<a href='" . $detail_path . "?id=" . $feed["id"] . "'>More Details</a>");
         else

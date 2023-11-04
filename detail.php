@@ -3,7 +3,7 @@ include ("common.php");
 
 $action_path = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 $search_path = str_replace("detail.php", "getdetailby.php", $action_path);
-$feed_path = str_replace("detail.php", "tiny.php", $action_path);
+$tiny_feed_path = str_replace("detail.php", "tiny.php", $action_path);
 $image_path = str_replace("detail.php", "image.php", $action_path);
 
 if (isset($_SERVER['QUERY_STRING']))
@@ -97,7 +97,7 @@ if (isset($feed)) {
     }
     echo "<li><b>Website:</b> <a href='" . $feed['link'] . "'>" . $feed['link'] . "</a></li>";
     echo("<li><b>Subscribe: </b><a href='{$feed["url"]}' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Full Feed</a> | ");
-    echo("<a href='$feed_path?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Tiny Feed</a></li>");
+    echo("<a href='$tiny_feed_path?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Tiny Feed</a></li>");
     if (isset($feed['substitution_reason'])) {
         echo "<li><small><b>Notes:</b> " . $feed['substitution_reason'] . "</small></li>";
     }
