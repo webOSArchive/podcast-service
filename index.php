@@ -105,7 +105,7 @@ if (isset($feed_response) && count($feed_response["feeds"]) > 0)
     foreach($feed_response["feeds"] as $feed) {
         echo("<tr><td align='center' valign='top' class='result-row'><img style='width:64px; height:64px; border-radius: 2%; -webkit-border-radius:5px;' src='". $image_path . "?img=" . base64url_encode($feed["image"]) . "' border='0' onerror='this.onerror=null; this.src=\"assets/icon-minimal.png\"' >");
         echo("<td width='100%' class='result-row' style='padding-left: 14px;'><b>{$feed["title"]}</b><br/>");
-        echo("<i>" . $feed["description"] . "...</i><br/>");
+        echo("<div style='padding-top: 16px'><i>" . $feed["description"] . "...</i><br/>");
         if (isset($feed["substitution_reason"])) {
             echo "<small>Note: " . $feed["substitution_reason"] . "</small><br>";
         }
