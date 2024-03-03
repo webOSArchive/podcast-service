@@ -76,7 +76,7 @@ if (!extension_loaded('gd')) {
   <link href="<?php echo $PROTOCOL . "://www.webosarchive.org/app-template/"?>web.css" rel="stylesheet" type="text/css" >
   <link href="style.css" rel="stylesheet" type="text/css" >
 </head>
-<body>
+<body onload="document.getElementById('txtSearch').focus()">
 <?php
 
 $docRoot = "./";

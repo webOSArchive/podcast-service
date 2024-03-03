@@ -1,7 +1,15 @@
 <?php
 include ("common.php");
 
-$action_path = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+//Figure out what protocol the client wanted
+$isSecure = false;
+if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
+	$PROTOCOL = "https";
+} else {
+	$PROTOCOL = "http";
+}
+
+$action_path = $PROTOCOL . '://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 $search_path = str_replace("detail.php", "getdetailby.php", $action_path);
 $tiny_feed_path = str_replace("detail.php", "tiny.php", $action_path);
 $image_path = str_replace("detail.php", "image.php", $action_path);
@@ -70,44 +78,51 @@ if (isset($feed)) {
 <meta name="twitter:description" content="<?php echo $ogDesc; ?>" />
 <meta name="twitter:image" content="<?php echo $ogImage; ?>" />
 <!-- /Social media -->
-
-<link rel="stylesheet" href="style.css">
+<link href="<?php echo $PROTOCOL . "://www.webosarchive.org/app-template/"?>web.css" rel="stylesheet" type="text/css" >
+<link href="style.css" rel="stylesheet" type="text/css" >
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=1" />
 <title><?php echo $ogTitle?></title>
 </head>
-<body onload="document.getElementById('txtSearch').focus()">
-<?php include ("menu.php"); ?>
-<div class="content">
-<small>&lt; <a href="<?php echo $back_path ?>">Back to Search</a></small>
+<body>
 <?php
-if (isset($feed)) {
-    //echo $feedimage;
-    echo "<p align='middle' style='margin-top:30px;'><img src='" . $feed['image'] . "' style='width:128px; height: 128px;border-radius: 3%; -webkit-border-radius:6px;' border='0' onerror='this.onerror=null; this.src=\"assets/icon-minimal.png\"' ></p>";
-    echo "<p align='middle' style='margin-top:12px;margin-bottom:32px;'><b>" . $feed['title'] . "</b></p>";
-    echo $feed['description'];
-
-    echo "<ul>";
-    echo "<li><b>Author:</b> " . $feed['author'] . "</li>";
-    echo "<li><b>Episodes:</b> " . $feed['episodeCount'] . "</li>";
-    if (isset($feed['categories'])) {
-        echo "<li><b>Categories:</b> ";
-        foreach ($feed['categories'] as $category) {
-            echo $category . " ";
-        }
-    }
-    echo "<li><b>Website:</b> <a href='" . $feed['link'] . "'>" . $feed['link'] . "</a></li>";
-    echo("<li><b>Subscribe: </b><a href='{$feed["url"]}' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Full Feed</a> | ");
-    echo("<a href='$tiny_feed_path?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Tiny Feed</a></li>");
-    if (isset($feed['substitution_reason'])) {
-        echo "<li><small><b>Notes:</b> " . $feed['substitution_reason'] . "</small></li>";
-    }
-    echo "</ul>";
-    echo "<!--" . json_encode($feed) . "-->";
-}
+$docRoot = "./";
+echo file_get_contents("https://www.webosarchive.org/menu.php?docRoot=" . $docRoot . "&protocol=" . $PROTOCOL);
 ?>
-<?php include ("help.html")?>
+<table width="100%" border=0 style="width:100%;border:0px"><tr><td align="center" style="width:100%;height:100%;border:0px">
+  <div id="row">
+    <div align="left">
+      <img src="<?php echo $feed['image']; ?>" width="128" height="128" alt="" style="float:left;margin-right:18px;"/>
+      <h1><?php echo $feed['title'];?></h1>
+      <p style="margin-top:-18px;"><b><?php echo $feed['author'];?></b></p>
+      <ul class="detail-list">
+      <?php
+        echo "<li><b>Episodes:</b> " . $feed['episodeCount'] . "</li>";
+        if (isset($feed['categories'])) {
+            echo "<li><b>Categories:</b> ";
+            foreach ($feed['categories'] as $category) {
+                echo $category . " ";
+            }
+        }
+        echo "<li><b>Website:</b> <a href='" . $feed['link'] . "'>" . $feed['link'] . "</a></li>";
+        echo("<li><b>Subscribe: </b><a href='{$feed["url"]}' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Full Feed</a> &nbsp;| &nbsp;");
+        echo("<a href='$tiny_feed_path?url=" . base64url_encode($feed["url"]) . "' target='_blank'><img src='assets/rss-16.png' style='vertical-align: top;'> Tiny Feed</a></li>");
+        if (isset($feed['substitution_reason'])) {
+            echo "<li><small><b>Notes:</b> " . $feed['substitution_reason'] . "</small></li>";
+        }
+      ?>
+      </ul>
+      <p> <?php echo $feed['description']?></p>
+      <p><?php include ("help.html")?></p>
+      <p><small>&lt; <a href="<?php echo $back_path ?>">Back to Search</a></small></p>
+    </div>
+  </div>
+  <div id="footer">
+    &copy;  webOSArchive
+    <div id="footer-links">
+      <a href="https://github.com/webosarchive/podcast-service/blob/master/PrivacyPolicy.md">Privacy Policy</a>
+    </div>
+  </div>
+</td></tr></table>
 
-<p align='middle' style="margin-top: 38px"><small>Search Provided by <a href='https://podcastindex.org/'>Podcast Index.org</a> | <a href="https://github.com/webosarchive/podcast-service">Host this yourself</a> | <a href='http://appcatalog.webosarchive.org/showMuseum.php?search=podcast+directory'>Download the webOS App</a></small></p>
-</div>
 </body>
 </html>

@@ -11,13 +11,14 @@ a { color:#cc5e05; text-decoration: none; }
 a:hover { color: #dd7622; }
 .help {
     border-top: 1px solid dimgray;
-    font-size: 12px;
+    font-size: smaller;
+    border-bottom: 1px solid dimgray;
 }
-.help h1 {
+.help h2 {
     font-size: 16px;
     font-weight: bold;
 }
-.help h2 {
+.help h3 {
     font-size: 13px;
     font-weight: bold;
     color: dimgray
@@ -32,4 +33,11 @@ a:hover { color: #dd7622; }
     border-top:1px dotted gray;
     padding-top: 18px;
     padding-bottom: 18px;
+}
+.detail-list {
+    margin-top:28px;
+    margin-left:-28px;
+}
+.detail-list li {
+    margin:12px;
 }
