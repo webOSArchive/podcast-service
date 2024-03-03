@@ -23,6 +23,9 @@ a:hover { color: #dd7622; }
     font-weight: bold;
     color: dimgray
 }
+#helpDetail {
+    margin-bottom: 18px;
+}
 .search-form {
     margin-top: 40px;
     margin-bottom: 40px;
