@@ -134,7 +134,7 @@ if (isset($feed_response) && count($feed_response["feeds"]) > 0)
   <div id="footer">
     &copy;  webOSArchive
     <div id="footer-links">
-      <a href="<?php echo $github . "/blob/master/PrivacyPolicy.md" ?>">Privacy Policy</a>
+    <a href="<?php echo $PROTOCOL . "://www.webosarchive.org/privacy.html"?>">Privacy Policy</a>
     </div>
   </div>
   </td></tr></table>
