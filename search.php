@@ -51,10 +51,9 @@ include ("restorations.php");
 if (isset($restorations)) {
 	foreach (array_keys($restorations) as $restoration) {
 		$thisTitle = strtolower($restoration);
-		if (strpos($thisTitle, $original_query) || strpos($original_query, $thisTitle)) {
-			array_push($response_obj->feeds, $restorations[$restoration]);
+		if (strpos($thisTitle, $original_query) !== false || strpos($original_query, $thisTitle) !== false) {
+				array_unshift($response_obj->feeds , $restorations[$restoration]);
 		}
-	}
 }
 
 //Inject any modified feeds
