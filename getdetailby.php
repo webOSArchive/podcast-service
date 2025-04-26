@@ -24,6 +24,8 @@ if (isset($_GET['id'])) {
 }
 if (!isset($the_query)) {
 	$the_query = $_SERVER['QUERY_STRING'];
+	$the_query = preg_replace("/[^a-zA-Z0-9&' ]+/", "", $the_query);
+
 }
 $the_query = "https://api.podcastindex.org/api/1.0/podcasts/" . $the_query;
 

@@ -5,8 +5,11 @@
 $maxResults = 15;
 if (isset($_GET['q'])) {
 	$the_query = $_GET['q'];
+	$the_query = preg_replace("/[^a-zA-Z0-9&' ]+/", "", $the_query);
 	if (isset($_GET['max'])) {
-		$the_query = $the_query . "&max=" . $_GET['max'];
+		$max = $_GET['max'];
+		$max = preg_replace("/[^0-9 ]+/", "", $max);
+		$the_query = $the_query . "&max=" . $max;
 	}
 
 } else {
