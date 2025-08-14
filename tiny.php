@@ -11,16 +11,21 @@ error_reporting (E_ALL);
 //Extract the query
 if (!isset($_GET["url"])) {
     header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-    die;
+    die("Missing URL parameter");
 }
 $cacheID = $_GET["url"];
 $url = base64url_decode($cacheID);
+
+if (!validate_url($url)) {
+    header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+    die("Invalid URL");
+}
+
 $as = "xml";
-if (isset($_GET["type"]))
-    $as = $_GET["type"];
-$maxItems = 10;
-if (isset($_GET["max"]))
-    $maxItems = $_GET["max"];
+if (isset($_GET["type"])) {
+    $as = in_array($_GET["type"], ["xml", "json"]) ? $_GET["type"] : "xml";
+}
+$maxItems = validate_numeric_input($_GET["max"] ?? 10, 1, 50);
 $cache = true;
 if (isset($_GET["cache"]) && $_GET["cache"]=="no") {
     $cache = false;
@@ -38,7 +43,11 @@ $path = "cache";
 if (!file_exists($path)) {
     mkdir($path, 0755, true);
 }
-$path = $path . "/" . $cacheID . ".xml";
+$safeCacheID = safe_cache_filename($cacheID);
+if (empty($safeCacheID)) {
+    $safeCacheID = 'feed_' . md5($url);
+}
+$path = $path . "/" . $safeCacheID . ".xml";
 
 //Fetch the file or use cache -- but dump cache if too old or cache is disabled
 if (file_exists($path) && ((time()-filemtime($path) > 24 * 3600 || !$cache)) || filesize($path) < 1) {
@@ -46,7 +55,21 @@ if (file_exists($path) && ((time()-filemtime($path) > 24 * 3600 || !$cache)) || 
     unlink($path);
 }
 if (!file_exists($path)) {
-    file_put_contents($path, fopen($url, 'r'));
+    $context = stream_context_create([
+        'http' => [
+            'timeout' => 30,
+            'method' => 'GET',
+            'header' => 'User-Agent: webOSPodcastDirectory/1.0\r\n'
+        ]
+    ]);
+    
+    $feedData = file_get_contents($url, false, $context, 0, 10*1024*1024);
+    if ($feedData === false) {
+        header($_SERVER["SERVER_PROTOCOL"] . " 502 Bad Gateway");
+        die("Unable to fetch feed");
+    }
+    
+    file_put_contents($path, $feedData);
 }
 
 //Try to load the remote file

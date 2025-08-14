@@ -1,19 +1,34 @@
 <?php
 /* See https://github.com/Podcastindex-org/example-code for more examples */
 
+include ("common.php");
+
 //Figure the query
 $maxResults = 15;
 if (isset($_GET['q'])) {
-	$the_query = $_GET['q'];
-	$the_query = preg_replace("/[^a-zA-Z0-9&' ]+/", "", $the_query);
+	$the_query = validate_search_query($_GET['q']);
+	if (empty($the_query)) {
+		header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+		die("Invalid search query");
+	}
 	if (isset($_GET['max'])) {
-		$max = $_GET['max'];
-		$max = preg_replace("/[^0-9 ]+/", "", $max);
+		$max = validate_numeric_input($_GET['max'], 1, 50);
 		$the_query = $the_query . "&max=" . $max;
 	}
 
 } else {
-	$the_query = $_SERVER['QUERY_STRING'];
+	$raw_query = $_SERVER['QUERY_STRING'] ?? '';
+	parse_str($raw_query, $params);
+	if (isset($params['q'])) {
+		$the_query = validate_search_query($params['q']);
+		if (empty($the_query)) {
+			header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+			die("Invalid search query");
+		}
+	} else {
+		header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+		die("Missing search query");
+	}
 }
 $queryParts = explode("&", $the_query);
 $original_query = $queryParts[0];

@@ -3,21 +3,26 @@ include ("common.php");
 
 //Handle more specific queries
 $img = null;
-$imgSize = 128;
-if (isset($_GET["size"]))
-    $imgSize = $_GET["size"];
+$imgSize = validate_numeric_input($_GET["size"] ?? 128, 32, 512);
+
 if (isset($_GET['img']) && $_GET['img'] != "") {
     $img = $_GET['img'];
-} else { //Accept a blanket query
-    if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != "")
-        $img = $_SERVER['QUERY_STRING'];
+} else if (isset($_SERVER['QUERY_STRING']) && $_SERVER['QUERY_STRING'] != "") {
+    $img = $_SERVER['QUERY_STRING'];
 }
-if (!isset($img)) {    //Deal with no usable request
+
+if (!isset($img) || empty($img)) {
     header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-    die;
+    die("Missing image parameter");
 }
+
 $cacheID = $img;
 $url = base64url_decode($cacheID);
+
+if (!validate_url($url)) {
+    header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+    die("Invalid URL");
+}
 
 //Prepare the cache
 $path = "cache";
@@ -25,18 +30,37 @@ if (!file_exists($path)) {
     mkdir($path, 0755, true);
 }
 
-//Make sure our filename isn't too long
-$fullWritePath = getcwd() . "/" . $path . "/";
-$availLength = 250 - strlen($fullWritePath);
-$startPos = strlen($cacheID) - $availLength;
-if ($startPos < 0)
-    $startPos = 0;
-$cacheID = substr($cacheID, $startPos);
+//Create safe filename
+$cacheID = safe_cache_filename($cacheID);
+if (empty($cacheID)) {
+    $cacheID = 'img_' . md5($url);
+}
 
 //Fetch and cache the file if its not already cached
 $path = $path . "/" . $cacheID . ".png";
 if (!file_exists($path) || filesize($path) < 1) {
-    file_put_contents($path, fopen($url, 'r'));
+    $context = stream_context_create([
+        'http' => [
+            'timeout' => 30,
+            'method' => 'GET',
+            'header' => 'User-Agent: webOSPodcastDirectory/1.0\r\n'
+        ]
+    ]);
+    
+    $imageData = file_get_contents($url, false, $context, 0, 5*1024*1024);
+    if ($imageData === false) {
+        header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+        die("Unable to fetch image");
+    }
+    
+    $finfo = new finfo(FILEINFO_MIME_TYPE);
+    $mimeType = $finfo->buffer($imageData);
+    if (!in_array($mimeType, ['image/jpeg', 'image/png', 'image/gif'])) {
+        header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
+        die("Invalid image format");
+    }
+    
+    file_put_contents($path, $imageData);
 }
 
 //TODO: Determine if the image is empty and return something generic instead
