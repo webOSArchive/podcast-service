@@ -31,16 +31,19 @@ if ($startPos < 0)
     $startPos = 0;
 $cacheID = substr($cacheID, $startPos);
 
-//Fetch and cache the file if its not already cached
+//Fetch and cache the file if its not already cached  
 $path = $path . "/" . $cacheID . ".mp3";
 if (!file_exists($path) || filesize($path) < 1) {
-	$fh = fopen($path, "w") or die("ERROR openining " . $url);
+	$fh = fopen($path, "w") or die("ERROR opening " . $url);
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_FILE, $fh);
 	curl_setopt($ch, CURLOPT_TIMEOUT, 720);
 	curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	//Optimize for faster downloads
+	curl_setopt($ch, CURLOPT_TCP_NODELAY, 1);
+	curl_setopt($ch, CURLOPT_BUFFERSIZE, 65536);
 	curl_exec($ch);
 	if (curl_errno($ch)) {
 		echo "Fetch error: " . curl_error($ch);
