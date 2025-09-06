@@ -18,11 +18,12 @@ if (isset($_GET['url']) && $_GET['url'] != "") {
 
 $cacheID = $mp3_info;
 $url = base64url_decode($cacheID);
-
+$url = substr($url, 0, strrpos($url, "?"));
 if (!validate_url($url)) {
     header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
     die("Invalid URL");
 }
+$cacheID = md5($url);
 
 //Prepare the cache
 $path = "cache";
@@ -31,9 +32,6 @@ if (!file_exists($path)) {
 }
 //Create safe filename
 $cacheID = safe_cache_filename($cacheID);
-if (empty($cacheID)) {
-    $cacheID = 'mp3_' . md5($url);
-}
 
 //Fetch and cache the file if its not already cached  
 $path = $path . "/" . $cacheID . ".mp3";
