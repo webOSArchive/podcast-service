@@ -3,14 +3,6 @@
 <?php
 include ("common.php");
 
-//App Details
-$title = "Retro Podcast Directory";
-$subtitle = "";
-$description = "Simplified podcast feeds for retro devices.";
-$github = "https://github.com/webosarchive/podcast-service";
-$museumLink = "http://appcatalog.webosarchive.org/app/podcastdirectory";
-$icon = "assets/icon.png";
-
 //Figure out what protocol the client wanted
 $isSecure = false;
 if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
@@ -18,6 +10,14 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') {
 } else {
 	$PROTOCOL = "http";
 }
+
+//App Details
+$title = "Retro Podcast Directory";
+$subtitle = "";
+$description = "Simplified podcast feeds for retro devices.";
+$github = "https://github.com/webosarchive/podcast-service";
+$museumLink = $PROTOCOL."://appcatalog.webosarchive.org/app/podcastdirectory";
+$icon = "assets/icon.png";
 
 //Podcast stuff
 $action_path = $PROTOCOL . '://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
@@ -62,7 +62,7 @@ if (!extension_loaded('gd')) {
   <meta name="author" content="webOS Archive">
   <meta property="og:title" content="<?php echo $title; ?>">
   <meta property="og:description" content="<?php echo $description; ?>">
-  <meta property="og:image" content="https://<?php echo $_SERVER['SERVER_NAME'] ?>/tracker/hero.png">
+  <meta property="og:image" content="<?php echo $PROTOCOL."://".$_SERVER['SERVER_NAME'].$icon ?>">
 
   <meta name="twitter:card" content="app">
   <meta name="twitter:site" content="@webOSArchive">
@@ -72,7 +72,7 @@ if (!extension_loaded('gd')) {
 
   <title><?php echo $title . $subtitle; ?></title>
   
-  <link id="favicon" rel="icon" type="image/png" sizes="64x64" href="<?php echo $icon;?>">
+  <link id="favicon" rel="icon" type="image/png" sizes="64x64" href="<?php echo $PROTOCOL."://".$_SERVER['SERVER_NAME'].$icon ?>">
   <link href="<?php echo $PROTOCOL . "://www.webosarchive.org/app-template/"?>web.css" rel="stylesheet" type="text/css" >
   <link href="style.css" rel="stylesheet" type="text/css" >
 </head>
