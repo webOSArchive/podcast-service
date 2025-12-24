@@ -17,7 +17,7 @@ $subtitle = "";
 $description = "Simplified podcast feeds for retro devices.";
 $github = "https://github.com/webosarchive/podcast-service";
 $museumLink = $PROTOCOL."://appcatalog.webosarchive.org/app/podcastdirectory";
-$icon = "assets/icon.png";
+$icon = "/assets/icon.png";
 
 //Podcast stuff
 $action_path = $PROTOCOL . '://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
