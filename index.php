@@ -18,6 +18,7 @@ $description = "Simplified podcast feeds for retro devices.";
 $github = "https://github.com/webosarchive/podcast-service";
 $museumLink = $PROTOCOL."://appcatalog.webosarchive.org/app/podcastdirectory";
 $icon = "/assets/icon.png";
+$hero = "/assets/hero.png";
 
 //Podcast stuff
 $action_path = $PROTOCOL . '://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
@@ -62,7 +63,7 @@ if (!extension_loaded('gd')) {
   <meta name="author" content="webOS Archive">
   <meta property="og:title" content="<?php echo $title; ?>">
   <meta property="og:description" content="<?php echo $description; ?>">
-  <meta property="og:image" content="<?php echo $PROTOCOL."://".$_SERVER['SERVER_NAME'].$icon ?>">
+  <meta property="og:image" content="<?php echo $PROTOCOL."://".$_SERVER['SERVER_NAME'].$hero ?>">
 
   <meta name="twitter:card" content="app">
   <meta name="twitter:site" content="@webOSArchive">
