@@ -194,6 +194,9 @@ else {  //XML RESPONSE
     for ($i = $list->length; --$i >= 0; ) {
         $el = $list->item($i);
         $attr = $el->getAttribute('url');
+	//Strip querystring
+	$attrParts = explode("?", $attr);
+	$attr = $attrParts[0];
         if (strpos($attr, "https:") !== false)
         {
             $el->setAttribute('url', $mp3_helper_path . "?" . base64url_encode($attr));
