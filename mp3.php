@@ -18,10 +18,9 @@ if (isset($_GET['url']) && $_GET['url'] != "") {
 
 $cacheID = $mp3_info;
 $url = base64url_decode($cacheID);
-$url = substr($url, 0, strrpos($url, "?"));
 if (!validate_url($url)) {
     header($_SERVER["SERVER_PROTOCOL"] . " 400 Bad Request");
-    die("Invalid URL");
+    die("Invalid URL: " . $url);
 }
 $cacheID = md5($url);
 
