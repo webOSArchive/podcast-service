@@ -1,0 +1,25 @@
+# nginx: serve the Pocket Casts sync endpoints from PHP (sync.php), alongside the
+# existing catalog service. This REPLACES the old Python/gunicorn proxy — once
+# this is in place you can stop and disable the pocketcasts-sync systemd unit.
+#
+# Add this block inside the existing `server { ... }` for podcasts.webosarchive.org,
+# ABOVE the generic `location ~ \.php$ { ... }` fastcgi block (which stays as-is
+# and actually executes sync.php).
+#
+# The client calls extension-less URLs like /sync/login and /sync/pull?token=...;
+# we rewrite /sync/<action> to /sync.php?action=<action>. nginx appends the
+# original query string (so ?token=... is preserved) because the replacement does
+# not end in '?'. `last` re-runs location matching so the \.php$ handler picks it up.
+
+location /sync/ {
+    rewrite ^/sync/([a-zA-Z]+)/?$ /sync.php?action=$1 last;
+    return 404;
+}
+
+# The existing PHP handler executes sync.php — nothing to add if you already have:
+#
+# location ~ \.php$ {
+#     include        fastcgi_params;
+#     fastcgi_pass   unix:/run/php/php-fpm.sock;   # match your socket
+#     fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+# }

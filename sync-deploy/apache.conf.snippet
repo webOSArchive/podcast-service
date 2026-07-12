@@ -1,0 +1,13 @@
+# Apache: serve the Pocket Casts sync endpoints from PHP (sync.php). This REPLACES
+# the old Python/gunicorn ProxyPass — remove the `ProxyPass /sync/ ...` lines and
+# stop/disable the pocketcasts-sync systemd unit once this is live.
+#
+# Requires mod_rewrite (a2enmod rewrite). Put this in the <VirtualHost> for
+# podcasts.webosarchive.org, or drop the RewriteRule lines into a .htaccess in the
+# web root if AllowOverride FileInfo is enabled.
+#
+# The client calls /sync/login (POST) and /sync/pull?token=... etc. QSA preserves
+# the ?token=... query string; [L] stops further rewriting; POST bodies pass through.
+
+RewriteEngine On
+RewriteRule ^sync/([a-zA-Z]+)/?$ sync.php?action=$1 [L,QSA]
