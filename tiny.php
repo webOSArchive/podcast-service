@@ -25,7 +25,7 @@ $as = "xml";
 if (isset($_GET["type"])) {
     $as = in_array($_GET["type"], ["xml", "json"]) ? $_GET["type"] : "xml";
 }
-$maxItems = validate_numeric_input($_GET["max"] ?? 10, 1, 50);
+$maxItems = validate_numeric_input($_GET["max"] ?? 10, 1, 500);
 $cache = true;
 if (isset($_GET["cache"]) && $_GET["cache"]=="no") {
     $cache = false;
